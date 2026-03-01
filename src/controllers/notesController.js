@@ -1,11 +1,9 @@
-import { TAGS } from '../constants/tags.js';
 import { Note } from '../models/note.js';
 import createHttpError from 'http-errors';
 
 export const getAllNotes = async (req, res) => {
   const { page = 1, perPage = 10, tag, search } = req.query;
   const skip = (page - 1) * perPage;
-  const notesQuery = Note.find(filter);
   const filter = {};
 
   if (tag) {
@@ -15,6 +13,7 @@ export const getAllNotes = async (req, res) => {
   if (search) {
     filter.$text = { $search: search };
   }
+  const notesQuery = Note.find(filter);
   const [totalNotes, notes] = await Promise.all([
     notesQuery.clone().countDocuments(),
     notesQuery.skip(skip).limit(perPage),
