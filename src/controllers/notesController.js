@@ -13,7 +13,7 @@ export const getAllNotes = async (req, res) => {
   if (search) {
     filter.$text = { $search: search };
   }
-  const notesQuery = Note.find({ filter });
+  const notesQuery = Note.find(filter);
   const [totalNotes, notes] = await Promise.all([
     notesQuery.clone().countDocuments(),
     notesQuery.skip(skip).limit(perPage),
